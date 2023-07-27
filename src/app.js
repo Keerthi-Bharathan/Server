@@ -1,4 +1,6 @@
+const dotenv = require("dotenv")
 const express = require("express")
+dotenv.config();
 const app = express();
 app.use(express.json());
 app.post("/Login",(req,res)=> {
@@ -10,10 +12,23 @@ app.post("/Login",(req,res)=> {
     }
     
 })
-app.post("/Register",(req,res)=>{
+app.post("/Register/:id/:name",(req,res)=>{
+    console.log(req.params.id);
+    console.log(req.params.name);
     console.log(req.body)
      res.send("Register")
 
+})
+const AuthRoute=require("./routes/auth");
+app.use("/api",AuthRoute);
+const CartRoute=require("./routes/cart");
+app.use("/car",CartRoute);
+
+const mongoose=require("mongoose")
+mongoose.connect(process.env.DB).then(()=>{
+    console.log("connected")
+}).catch(err=>{
+    console.log("not connect");
 })
 
 
